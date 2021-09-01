@@ -13,12 +13,12 @@ http:
 	# ovlivňuje hlavičku X-Frame-Options
 	    X-Frame-Options: 'DENY'
 	# posílat cookie pouze přes HTTPS?
-	cookieDomain: 'pokus.local'
+	cookieDomain: 'název vaší domény'
 	cookieSecure: auto
 	featurePolicy:
 	    geolocation:
 	    - self
-	    - http://www.pokus.local
+	    - http://název vaší domény
 
 application:
 	errorPresenter: Error
