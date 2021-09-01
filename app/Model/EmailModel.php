@@ -21,7 +21,7 @@ class EmailModel
     /** @var Nette\Database\Context */
     private $database;
 
-    public function __construct($sslHost = 'smtp.onebit.cz',$sslUser = 'noreply@mirdafox.cz',$sslPass = '37hesloPosta73',$sslsec = 'ssl',Nette\Database\Context $database)
+    public function __construct($sslHost = '',$sslUser = '',$sslPass = '',$sslsec = 'ssl',Nette\Database\Context $database)
     {
         $this->sslHost = $sslHost;
         $this->sslUser = $sslUser;
