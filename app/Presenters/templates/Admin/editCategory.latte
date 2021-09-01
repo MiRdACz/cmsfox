@@ -1,0 +1,27 @@
+{block title}Editovat kategorie{/block}
+{block content}
+<div class="fullSite container-fluid">
+<div class="py-3"><span class="badge bg-secondary small">
+<span class="fas fa-list-ul fa-fw"></span> Editovat kategorie </span></div>
+
+<form n:name="categoryForm">
+ <label class="d-none">Kategorie, podkategorie</label>
+ <select n:name="parent_id" class="form-control my-3 d-none" >
+ </select>
+ <label n:name="name">Název</label>
+     <input class="form-control my-3" n:name="name" value="{$name}">
+     <button n:name="send" class="btn btn-sm btn-outline-success mb-4">Uložit</button>
+</form>
+</div>
+{/block}
+{block script}
+{include parent}
+        <script>
+                $(document).ready(function(){
+                  history.replaceState && history.replaceState(
+                  null, '', location.pathname + location.search.replace(/[\?&]_fid=[^&]+/, '').replace(/^&/, '?')
+                  );
+                });
+        </script>
+        {include 'mceJS.latte'}
+{/block}

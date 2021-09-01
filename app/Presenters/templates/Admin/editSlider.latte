@@ -1,0 +1,95 @@
+{block title}Admin{/block}
+{block description}CMS Admin{/block}
+{block content}
+<div class="fullSite container-fluid">
+{foreach $slider as $gal}
+<div class="py-3"><span class="badge bg-secondary small"><span class="fas fa-code fa-fw"></span> Short Code / <a class="text-light" n:href="Admin:slider">Slider</a> / {$gal->name}</span></div>
+
+
+<div class="card">
+          <div class="card-header">
+            Editace slideru <b>{$gal->name}</b>
+          </div>
+      <div class="card-body">
+        <form n:name="nameSliderForm">
+        <div class="input-group my-4">
+          <label n:name="name" class="input-group-text">Změna jména slideru</label>
+          <input n:name="name" class="form-control" />
+          <input n:name="send" class="input-group-text btn btn-success col-md-2 col" />
+        </div>
+        <div class="input-group my-4">
+                  <label n:name="time" class="input-group-text">Čas změny obrázků ms</label>
+                  <input n:name="time" class="form-control" />
+                  <input n:name="timeSub" class="input-group-text btn btn-success col-md-2 col" />
+                </div>
+        </form>
+
+        <div class="input-group my-5">
+        <label name="fieldID" class="input-group-text">Přidat obrázky</label>
+           <input id="fieldID" type="hidden" value="" >
+           <a href="{$baseUrl|noescape}/js/tinymce/plugins/filemanager/dialog.php?type=1&amp;field_id=fieldID&amp;relative_url=1&amp;multiple=1&fldr='/'&akey=aD57dfS97DF2x6F4f5S" class="iframe-btn btn btn btn-success input-group-text" type="button" >Vybrat obrázky</a>
+        </div>
+        <p class="input-group-text">Přidat text k obrázkům nebo smazat obrázky ve slideru ( nahrané obrázky na serveru zůstávají )</p>
+        <div class="row">
+        {foreach $img as $i}
+        <div class="col p-3">
+        <a class="btn btn-success col-12" data-bs-toggle="collapse" href="#textSlider_{$i['id']}" role="button" aria-expanded="false" aria-controls="textSlider_{$i['id']}"><span class="fas fa-plus fa-fw"></span> přidat text k obrázku</a>
+        <div class="collapse" id="textSlider_{$i['id']}">
+          <form n:name="addTextSliderForm-$i->id" class="card card-body p-0 m-0">
+            <textarea n:name="text" class="form-control tinyMCE" rows="5"></textarea>
+            <input n:name="itemId" />
+            <input n:name="send" class="btn btn-sm btn-success"/>
+          </form>
+        </div>
+        <img src="../img/{$i['content']}" class="img-float w-100" />
+        <a n:href="Admin:smazatSliderImg, $i['id'],$gal->id" class="btn btn-danger w-100 smaz">smazat</a>
+        </div>
+        {/foreach}
+        </div>
+      </div>
+</div>
+{/foreach}
+
+
+</div>
+<script n:nonce >
+const odkazId = document.querySelectorAll('.smaz');
+      odkazId.forEach(function(e){
+       e.addEventListener("click", function(udalost){
+       var odpoved = confirm('Opravdu smazat?');
+       if(!odpoved){ udalost.preventDefault();}
+       });
+      });
+</script>
+<link n:nonce rel="stylesheet" href="{$baseUrl}/js/jquery.fancybox.min.css" />
+<script n:nonce src="{$baseUrl}/js/jquery.fancybox.min.js"></script>
+<script n:syntax=off n:nonce>
+      $(document).ready(function(){
+         $().fancybox({
+         selector : '.iframe-btn',
+         'width'  : 900,
+         'height' : 600,
+         'type'   : 'iframe',
+         'autoScale' 	: false
+         });
+      });
+</script>
+<script n:nonce>
+$(document).ready(function(){
+                        history.replaceState && history.replaceState(
+                        null, '', location.pathname + location.search.replace(/[\?&]_fid=[^&]+/, '').replace(/^&/, '?')
+                        );
+                      });
+
+{foreach $slider as $gal}
+           function responsive_filemanager_callback(field_id){
+                  	var url=jQuery('#'+field_id).val();
+                    naja.makeRequest('GET', {link Admin:sliderPlusImg}, { content: url, idGal: {$gal->id} });
+                    naja.addEventListener('complete', () => {
+                      location.reload();alert('Obrázek byl přidán');
+                    } );
+           }
+{/foreach}
+                      </script>
+            {include 'mceJS.latte'}
+{/block}

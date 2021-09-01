@@ -1,0 +1,107 @@
+{block title}Admin Editace Produktu{/block}
+{block description}CMS Admin Editace Produkt{/block}
+{block content}
+<div class="fullSite">
+<div class="py-3 container-fluid"><span class="badge bg-secondary small"><span class="fas fa-shopping-cart fa-fw"></span> Eshop / <a n:href="Homepage:default,eshop" class="link-light">Seznam </a> / Editace produktu</span></div>
+
+<form n:name="eshopForm" class="container mx-auto">
+ <div class="alert alert-danger" n:if="$form->ownErrors">
+  	<span n:foreach="$form->ownErrors as $error">{$error}</span>
+  </div>
+  <div class="row">
+              <div class="col-12 col-md-6">
+    <label n:name="url"><b>Url</b></label>
+    <input class="form-control my-3" n:name="url" placeholder="název url bez diakritiky a místo mezer použijte mínus např. nazev-typ">
+    </div>
+                <div class="col-12 col-md-6">
+    <label n:name="title"><b>Titulek</b></label>
+    <input class="form-control my-3" n:name="title" placeholder="krátký název">
+    </div>
+              <div class="col-12 col-md-6">
+    <label n:name="name"><b>Název</b></label>
+            <input class="form-control my-3" n:name="name" placeholder="opište krátký název a přidejte více informací - použito pro vyhledávání">
+    </div>
+<div class="col-12 col-md-6">
+    <label n:name="sklad"><b>Sklad</b></label>
+            <input class="form-control my-3" n:name="sklad" placeholder="počet kusů na skladě">
+    </div>
+<div class="col-12 col-md-6">
+    <label n:name="price"><b>Cena</b></label>
+                <input class="form-control my-3" n:name="price" placeholder="cena produktu bez DPH">
+    </div>
+<div class="col-12 col-md-6">
+    <label n:name="dph"><b>DPH</b></label>
+            <input class="form-control my-3" n:name="dph" placeholder="Výše daně DPH">
+    </div>
+<div class="col-12 col-md-6">
+    <label><b>Kategorie</b></label>
+<select n:name="category" class="form-control my-3">
+	{foreach $form[category]->items as $key => $label}
+    	<option n:name="category:$key">{$label}</option>
+    {/foreach}
+</select>
+</div>
+<div class="col-12 col-md-6">
+    <label n:name="dph"><b>AKCE</b></label>
+            <input class="form-control my-3" n:name="sale" placeholder="Výše slevy v %">
+    </div>
+</div>
+
+
+
+<div class="row my-4">
+       <div class="col-12 ps-2">
+         <div class="col-12 px-1">
+           <div class="input-group">
+             <div class="input-group-prepend col-12 col-lg-2 my-auto">
+               <label for="file" class="input-group-text">Obrázek</label>
+             </div>
+             <input class="form-control my-2" type="file" id="file" name="file">
+             <div class="input-group-append col-12 col-md-4 col-lg-3 my-auto">
+               <div class="btn btn-success" id="uploadImg">Nahrát obrázek</div>
+             </div>
+           </div>
+         </div>
+       </div>
+    </div>
+            {snippet uploadImg}
+                <div id="demo">
+                   <input type="hidden" n:name="img">
+                   <img src="{$obr}" alt="nahraný obr." />
+                </div>
+            {/snippet}
+    <br />
+    <label n:name="content"><b>Obsah</b></label>
+    <textarea class="form-control tinyMCE" n:name="content" rows="20"></textarea>
+    <div class="text-center py-2">
+       <input class="py-2 w-100 btn btn-sm btn-success" n:name="send">
+    </div>
+</form>
+</div>
+{/block}
+{block script}
+{include parent}
+<script n:nonce>
+        $("#uploadImg").click(function(){
+            var formData = new FormData();
+            var fileSelect = document.getElementById("file");
+                    if(fileSelect.files && fileSelect.files.length == 1){
+                        var file = fileSelect.files[0];
+                        formData.set("file", file , file.name);
+                    }
+
+
+            naja.makeRequest('POST', {link uploadImg!},formData );
+
+
+            naja.addEventListener('complete', (payload) => { document.getElementById("demo").innerHTML = payload.response.message; });
+            });
+
+                $(document).ready(function(){
+                  history.replaceState && history.replaceState(
+                  null, '', location.pathname + location.search.replace(/[\?&]_fid=[^&]+/, '').replace(/^&/, '?')
+                  );
+                });
+        </script>
+        {include 'mceJS.latte'}
+{/block}

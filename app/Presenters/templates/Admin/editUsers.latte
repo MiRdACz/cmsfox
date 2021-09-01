@@ -1,0 +1,41 @@
+{block title}Admin Users{/block}
+{block description}CMS Admin Users{/block}
+{block content}
+<div class="fullSite container-fluid">
+<div class="py-3"><span class="badge bg-secondary small">
+<span class="fas fa-users fa-fw"></span> Uživatelé / Nový uživatel / <a n:href="Admin:users" class="text-light">Seznam</a></span>
+</div>
+<form n:name="usersForm">
+    <div class="mx-auto col-12 col-lg-8 py-3">
+    <div class="form-group my-3">
+        <select class="form-control form-control my-2" n:name="role">
+        {foreach $form[role]->items as $key => $value}
+        	<option n:name="role">{$value}</option>
+        {/foreach}
+        </select>
+        <label class="form-control-placeholder" n:name="username">{label role}</label>
+    </div>
+    <div class="form-group my-3">
+          <input class="form-control" n:name="username" required>
+          <label class="form-control-placeholder" n:name="username">{if $form[username]->error}<span class="text-danger">{$form[username]->error}</span>{else}{label username}{/if}</label>
+    </div>
+    <div class="form-group my-3">
+        <input class="form-control mt-4" n:name="email" required>
+        <label class="form-control-placeholder" n:name="email">{if $form[email]->error}<span class="text-danger">{$form[email]->error}</span>{else}{label email/}{/if}</label>
+    </div>
+
+    <div class="form-group my-3">
+        <input class="form-control mt-4" n:name="password" required>
+        <label class="form-control-placeholder" n:name="password">{if $form[password]->error}<span class="text-danger">{$form[password]->error}</span>{else}{label password/}{/if}</label>
+    </div>
+
+    <div class="form-group my-3">
+            <input class="form-control mt-4" n:name="passwordAgain" required>
+            <label class="form-control-placeholder" n:name="passwordAgain">{if $form[password]->error}<span class="text-danger">{$form[password]->error}</span>{else}{label passwordAgain/}{/if}</label>
+    </div>
+    <br>
+    <input class="form-control btn btn-outline-success" n:name="send">
+    </div>
+</form>
+</div>
+{/block}

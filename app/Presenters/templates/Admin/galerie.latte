@@ -1,0 +1,113 @@
+{block title}Admin Galerie{/block}
+{block description}CMS Admin Galerie{/block}
+{block content}
+<div class="fullSite container-fluid">
+    <div class="py-3"><span class="badge bg-secondary small"><span class="fas fa-code fa-fw"></span> Short Code / Galerie</span></div>
+<div class="row gx-5">
+    <div class="col-3">
+    <div class="card">
+    <div class="card-header">
+    Nová galerie
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+           <input type="text" id="name" class="form-control" required/>
+           <label for="name" id="error" class="form-control-placeholder">Název galerie</label>
+        </div>
+        <div class="input-append">
+           <input id="fieldID" type="hidden" value="">
+           <a href="{$baseUrl|noescape}/js/tinymce/plugins/filemanager/dialog.php?type=1&amp;field_id=fieldID&amp;relative_url=1&amp;multiple=1&fldr='/'&akey=aD57dfS97DF2x6F4f5S" class="iframe-btn btn btn-sm btn-success col-12" type="button">Vybrat fotky a vytvořit short code galerie</a>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="col-6">
+      <div class="card">
+          <div class="card-header">
+            Přehled
+          </div>
+      <div class="card-body">
+        <ul class="list-group" n:ifset="$galerie">
+              <li n:foreach="$galerie as $id=>$polozka" class="list-group-item list-group-item-action">{$polozka['name']}
+              <a title="Editovat galerii" class="float-end ms-4" n:href="Admin:editGalerie,$polozka['id']"><i class="fas fa-edit text-success fa-fw"></i></a>
+              <a title="Odstranit galerii" class="float-end smaz" n:href="Admin:smazatGalerie ,$polozka['id']"> <i class="fas fa-trash-alt text-danger fa-fw"></i></a>
+              </li>
+        </ul>
+        {if count($galerie) == 0} Galerie je prázdná {/if}
+      </div>
+      </div>
+    </div>
+    <div class="col-3">
+    <div class="card">
+        <div class="card-header">
+        <i class="far fa-lightbulb fa-fw pe-2" aria-hidden="true"></i> jak na to?
+        </div>
+    <div class="card-body">
+      Názvy short codů galerie a sliderů se <b>nesmí shodovat!</b> Používejte např. galerieDovolena a u slideru např. sliderDovolena.
+      Při nahrávání obrázků je povolena max. šířka obrázku 1980px, vytvořte nový adresář pro fotky galerie.Pomocí manažeru na obrázky. Vytvořené shortCode galerie, lze použít v editoru, při editaci nebo tvorbě obsahu stránky.<b> Odstraněním galerie zůstávají nahrané obrázky na serveru</b>!
+      <a n:href="pripravImg">Nevíte jak upravit velikost obrázku. Použijte aplikaci!</a>
+    </div>
+    </div>
+    </div>
+</div>
+</div>
+{/block}
+{block script}
+{include parent}
+<link n:nonce rel="stylesheet" href="{$baseUrl}/js/jquery.fancybox.min.css" />
+<script n:nonce src="{$baseUrl}/js/jquery.fancybox.min.js"></script>
+      <script n:syntax=off n:nonce>
+                      $(document).ready(function(){
+                              $().fancybox({
+                                selector : '.iframe-btn',
+                                'width'  : 900,
+                                'height' : 600,
+                                'type'   : 'iframe',
+                                'autoScale' 	: false
+                              });
+
+                      });
+              </script>
+              <script n:nonce>
+                    const odkazId = document.querySelectorAll('.smaz');
+                    odkazId.forEach(function(e){
+                     e.addEventListener("click", function(udalost){
+                     var odpoved = confirm('Opravdu smazat?');
+                     if(!odpoved){ udalost.preventDefault();}
+                     });
+                    });
+
+                      $(document).ready(function(){
+                        history.replaceState && history.replaceState(
+                        null, '', location.pathname + location.search.replace(/[\?&]_fid=[^&]+/, '').replace(/^&/, '?')
+                        );
+                      });
+
+                          function responsive_filemanager_callback(field_id){
+                              	//console.log(field_id);
+                              	var url=jQuery('#'+field_id).val();
+
+                              	var name= document.getElementById('name').value;
+                              	var ArName =[
+                              	        {ifset $galerie}
+                                             {foreach $galerie as $polozka}
+                                              {$polozka['name']} ,
+                                             {/foreach}
+                                          {/ifset}
+                                          ];
+                                  if(ArName.includes(name) === true){
+                                   document.getElementById("error").innerHTML = "<span class='text-danger'>Jméno galerie již existuje!</span>";
+                                   return false;
+                                  }else if(name == ''){
+                              	    document.getElementById("error").innerHTML = "<span class='text-danger'>Jméno galerie neexistuje!</span>";
+                              	    return false;
+                              	}else{
+                                  naja.makeRequest('GET', {link Admin:galerie}, { content: url, name: name });
+                                  naja.addEventListener('complete', () => {
+                                   location.reload();alert('Galerie '+name+' byla vytvořena');
+                                   } );
+                                  }
+                              }
+                      </script>
+            {include 'mceJS.latte'}
+{/block}
