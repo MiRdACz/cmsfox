@@ -2,6 +2,6 @@ parameters:
 
 
 database:
-	dsn: 'mysql:host=127.0.0.1;dbname=pokus'
-	user:   root
-	password:   37spawn73
+	dsn: 'mysql:host=127.0.0.1;dbname=jméno databáze'
+	user:   uživatelské jméno
+	password:   heslo do databáze
