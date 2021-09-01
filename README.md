@@ -1,2 +1,2 @@
 # cmsfox
-Základní kostra cms
+Základní kostra CMS napsaná v Nette
