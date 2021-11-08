@@ -1,4 +1,5 @@
 # cmsfox
-Základní kostra CMS napsaná v Nette.<br>
-Nahráno bez šablon.<br>
-Ukázka CMS <a href="https://zkus.mirdafox.cz/">zde</a>
+Ukázka kódu CMS napsaná v Nette.<br>
+Tady je zobrazena databáze pomocí návrháře.<br><br>
+<img src="https://www.mirdafox.cz/img/blog/db/db.jpg" alt="db" />
+Ukázka CMS <a href="https://www.mirdafox.cz/">zde</a>
